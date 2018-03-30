@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import Cockpit from '../components/Cockpit/Cockpit';
+import WithClass from '../hoc/WithClass';
 
-class App extends Component {
+class App extends PureComponent {
 
   constructor(props) {
     super(props);
@@ -26,6 +27,20 @@ class App extends Component {
 
   componentDidMount() {
     console.log('[App.js] Inside componentDidMount');
+  }
+
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   console.log('[UPDATE App.js] Inside shouldComponentUpdate', nextProps, nextState);
+  //   return nextState.person !== this.state.person
+  //     nextState.showPerson !== this.state.showPerson;
+  // }
+
+  componentWillUpdate (nextProps, nextState) {
+      console.log('[UPDATE App.js] Inside componentWillUpdate', nextProps, nextState);
+  }
+
+  componentDidUpdate () {
+      console.log('[UPDATE App.js] Inside componentDidUpdate');
   }
 
   // state = {
@@ -96,7 +111,8 @@ class App extends Component {
 
     return (
 
-      <div className={classes.App}>
+      <WithClass classes={classes.App}>
+        <button onClick={() => {this.setState({showPerson: true})}}>Show Persons</button>
         <Cockpit 
           // get from index.js
           appTitle={this.props.title}
@@ -106,7 +122,7 @@ class App extends Component {
           clicked={this.togglePersonHandel}/>
         {persons}
         
-      </div>
+      </WithClass>
 
     );
     // Understanding JSX
